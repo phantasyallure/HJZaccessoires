@@ -6,9 +6,9 @@ import ChatTab from './admin/ChatTab.jsx'
 import './AdminDashboard.css'
 
 const TABS = [
-  { id: 'products', label: 'Produits' },
-  { id: 'orders', label: 'Commandes' },
-  { id: 'chat', label: 'Messages' },
+  { id: 'products', label: 'Produits', icon: '📦' },
+  { id: 'orders', label: 'Commandes', icon: '🧾' },
+  { id: 'chat', label: 'Messages', icon: '💬' },
 ]
 
 export default function AdminDashboard() {
@@ -24,22 +24,25 @@ export default function AdminDashboard() {
     <div className="admin-dashboard">
       <header className="admin-dashboard__header">
         <div className="container admin-dashboard__header-inner">
-          <h1>HJZ — Administration</h1>
+          <h1>
+            HJZ — Administration
+            <span className="admin-dashboard__badge">✨ Back-office</span>
+          </h1>
           <button className="btn" onClick={logout}>Se déconnecter</button>
         </div>
-      </header>
 
-      <nav className="container admin-dashboard__tabs">
-        {TABS.map((t) => (
-          <button
-            key={t.id}
-            className={`admin-dashboard__tab ${tab === t.id ? 'is-active' : ''}`}
-            onClick={() => setTab(t.id)}
-          >
-            {t.label}
-          </button>
-        ))}
-      </nav>
+        <nav className="container admin-dashboard__tabs">
+          {TABS.map((t) => (
+            <button
+              key={t.id}
+              className={`admin-dashboard__tab ${tab === t.id ? 'is-active' : ''}`}
+              onClick={() => setTab(t.id)}
+            >
+              <span aria-hidden="true">{t.icon}</span> {t.label}
+            </button>
+          ))}
+        </nav>
+      </header>
 
       <main className="container admin-dashboard__content">
         {tab === 'products' && <ProductsTab />}
