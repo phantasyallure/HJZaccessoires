@@ -8,6 +8,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 .admin-dashboard__header h1 { font-size: 1.5rem; }
 
@@ -15,7 +17,10 @@
   display: flex;
   gap: 6px;
   padding-top: 20px;
+  overflow-x: auto;
+  scrollbar-width: none;
 }
+.admin-dashboard__tabs::-webkit-scrollbar { display: none; }
 
 .admin-dashboard__tab {
   padding: 10px 18px;
@@ -25,6 +30,8 @@
   background: var(--surface);
   color: var(--ink-muted);
   font-size: 0.9rem;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 .admin-dashboard__tab.is-active { color: var(--gold-light); background: var(--surface-raised); }
 
@@ -33,6 +40,13 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
+}
+
+@media (max-width: 640px) {
+  .admin-dashboard__header { padding: 16px 0; }
+  .admin-dashboard__header h1 { font-size: 1.15rem; }
+  .admin-dashboard__header .btn { padding: 9px 16px; font-size: 0.82rem; }
+  .admin-dashboard__content { padding: 20px 16px 60px; gap: 18px; }
 }
 
 .admin-tab {
@@ -52,6 +66,11 @@
   padding: 24px;
 }
 .admin-card h3 { font-size: 1.2rem; margin-bottom: 18px; }
+
+@media (max-width: 640px) {
+  .admin-card { padding: 16px; }
+  .admin-card h3 { font-size: 1.05rem; }
+}
 
 .admin-checkbox {
   display: flex;
@@ -148,6 +167,14 @@
   .admin-stock-editor { order: 3; width: 100%; margin-inline-start: 66px; }
 }
 
+@media (max-width: 480px) {
+  .admin-product-row { gap: 10px; }
+  .admin-product-row__info { min-width: 0; }
+  .admin-product-row__info strong { word-break: break-word; }
+  .admin-stock-editor { margin-inline-start: 0; }
+  .admin-delete { width: 100%; order: 4; }
+}
+
 .admin-delete { border-color: var(--danger); color: var(--danger); padding: 8px 14px; font-size: 0.82rem; }
 .admin-delete:hover { background: var(--danger); color: #fff; }
 
@@ -181,6 +208,10 @@
   border-radius: var(--radius);
   padding: 8px 10px;
   color: var(--ink);
+}
+
+@media (max-width: 700px) {
+  .admin-order-row select { width: 100%; }
 }
 
 .admin-chat {
@@ -223,6 +254,21 @@
   display: flex;
   flex-direction: column;
   min-height: 400px;
+}
+
+@media (max-width: 800px) {
+  .admin-chat__sessions {
+    border-right: none;
+    border-bottom: 1px solid var(--hairline);
+    max-height: 220px;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+  }
+  .admin-chat__session { flex-shrink: 0; min-width: 160px; }
+  .admin-chat__thread { min-height: 320px; }
+  .admin-chat__messages { max-height: 320px; padding: 16px; }
+  .admin-chat__form { padding: 12px 16px; }
 }
 
 .admin-chat__messages {
