@@ -21,6 +21,7 @@ export default function AdminLogin() {
   return (
     <div className="admin-login">
       <form className="admin-login__card" onSubmit={submit}>
+        <div className="admin-login__icon">🔐</div>
         <p className="admin-login__eyebrow">HJZ Accessoiries</p>
         <h1>Espace administration</h1>
         <div className="field">
