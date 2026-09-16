@@ -1,0 +1,162 @@
+/* Hero: full-bleed brand photograph */
+.hero {
+  position: relative;
+  overflow: hidden;
+  height: clamp(360px, 58vw, 620px);
+  background: var(--burgundy-900);
+}
+
+.hero__media {
+  position: absolute;
+  inset: 0;
+}
+
+.hero__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 42%;
+  display: block;
+}
+
+.hero__fade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(61, 13, 27, 0) 70%, var(--bg) 100%);
+}
+
+/* Slow left-to-right pan, phones only — reveals the pieces sitting either
+   side of the frame as the viewport crops in tighter on a narrow screen. */
+@media (max-width: 640px) {
+  .hero { height: 62vw; min-height: 320px; }
+
+  .hero__media img {
+    width: 145%;
+    max-width: none;
+    animation: hero-pan 22s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes hero-pan {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-30%); }
+}
+
+/* Intro / headline block, set apart from the photo rather than over it */
+.intro {
+  padding: 56px 0 40px;
+  text-align: center;
+}
+
+.intro__inner {
+  max-width: 640px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.intro h1 {
+  font-size: clamp(2rem, 4.2vw, 2.9rem);
+  line-height: 1.2;
+}
+
+.intro p {
+  color: var(--ink-muted);
+  font-size: 1.05rem;
+  line-height: 1.6;
+  max-width: 46ch;
+}
+
+/* Trust strip */
+.trust {
+  border-block: 1px solid var(--hairline);
+  padding: 18px 0;
+}
+
+.trust__row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 0.85rem;
+  color: var(--ink-muted);
+  letter-spacing: 0.01em;
+}
+
+.trust__divider {
+  width: 1px;
+  height: 14px;
+  background: var(--hairline);
+}
+
+@media (max-width: 640px) {
+  .trust__row { gap: 10px; }
+  .trust__divider { display: none; }
+  .trust__row span:not(.trust__divider) { width: 100%; text-align: center; }
+}
+
+/* Collection */
+.landing__main { padding: 64px 0 100px; }
+
+.landing__main-head {
+  text-align: center;
+  margin-bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.landing__main-head h2 { font-size: clamp(1.6rem, 3vw, 2.1rem); }
+.landing__main-head p { color: var(--ink-muted); font-size: 0.98rem; }
+
+.landing__status {
+  color: var(--ink-muted);
+  font-size: 0.95rem;
+  padding: 40px 0;
+  text-align: center;
+}
+
+.landing__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 24px;
+}
+
+/* Footer */
+.landing__footer {
+  border-top: 1px solid var(--hairline);
+  padding: 36px 0;
+  background: var(--surface-raised);
+}
+
+.landing__footer-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.landing__footer-brand {
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  color: var(--gold);
+}
+
+.landing__footer-tagline {
+  color: var(--ink-muted);
+  font-size: 0.85rem;
+  margin-top: 6px;
+}
+
+.landing__footer-rights {
+  color: var(--ink-faint);
+  font-size: 0.8rem;
+}
+
+@media (max-width: 640px) {
+  .landing__footer-inner { flex-direction: column; align-items: flex-start; }
+}
