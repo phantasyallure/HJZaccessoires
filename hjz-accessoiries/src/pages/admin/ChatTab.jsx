@@ -64,7 +64,7 @@ export default function ChatTab() {
   return (
     <div className="admin-card admin-chat">
       <div className="admin-chat__sessions">
-        <h3>Conversations ({sessions.length})</h3>
+        <h3>💬 Conversations ({sessions.length})</h3>
         {sessions.length === 0 && <p className="admin-hint">Aucun message reçu.</p>}
         {sessions.map((s) => (
           <button
@@ -72,8 +72,13 @@ export default function ChatTab() {
             className={`admin-chat__session ${s.session_id === activeSession ? 'is-active' : ''}`}
             onClick={() => setActiveSession(s.session_id)}
           >
-            <span>Client {s.session_id.slice(0, 8)}</span>
-            <small>{s.last.message.slice(0, 34)}{s.last.message.length > 34 ? '…' : ''}</small>
+            <span className="admin-chat__session__avatar" aria-hidden="true">
+              {s.session_id.slice(0, 2).toUpperCase()}
+            </span>
+            <span className="admin-chat__session__body">
+              <span>Client {s.session_id.slice(0, 8)}</span>
+              <small>{s.last.message.slice(0, 34)}{s.last.message.length > 34 ? '…' : ''}</small>
+            </span>
           </button>
         ))}
       </div>
