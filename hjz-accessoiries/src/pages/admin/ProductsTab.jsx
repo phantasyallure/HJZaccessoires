@@ -96,10 +96,47 @@ export default function ProductsTab() {
     setSavingStockId(null)
   }
 
+  const totalCount = products.length
+  const soldOutCount = products.filter((p) => Number(p.stock) <= 0).length
+  const inStockCount = totalCount - soldOutCount
+  const totalUnits = products.reduce((sum, p) => sum + Math.max(0, Number(p.stock) || 0), 0)
+
   return (
-    <div className="admin-tab">
+    <>
+      <div className="admin-stats">
+        <div className="admin-stat-card admin-stat-card--indigo">
+          <span className="admin-stat-card__icon">📦</span>
+          <span>
+            <span className="admin-stat-card__value">{totalCount}</span>
+            <span className="admin-stat-card__label">Produits</span>
+          </span>
+        </div>
+        <div className="admin-stat-card admin-stat-card--teal">
+          <span className="admin-stat-card__icon">✅</span>
+          <span>
+            <span className="admin-stat-card__value">{inStockCount}</span>
+            <span className="admin-stat-card__label">En stock</span>
+          </span>
+        </div>
+        <div className="admin-stat-card admin-stat-card--rose">
+          <span className="admin-stat-card__icon">⛔</span>
+          <span>
+            <span className="admin-stat-card__value">{soldOutCount}</span>
+            <span className="admin-stat-card__label">Épuisés</span>
+          </span>
+        </div>
+        <div className="admin-stat-card admin-stat-card--blue">
+          <span className="admin-stat-card__icon">🔢</span>
+          <span>
+            <span className="admin-stat-card__value">{totalUnits}</span>
+            <span className="admin-stat-card__label">Pièces totales</span>
+          </span>
+        </div>
+      </div>
+
+      <div className="admin-tab">
       <form className="admin-card admin-form" onSubmit={submit}>
-        <h3>Ajouter un produit</h3>
+        <h3>➕ Ajouter un produit</h3>
 
         <div className="field">
           <label>Nom du produit</label>
@@ -169,45 +206,51 @@ export default function ProductsTab() {
       </form>
 
       <div className="admin-card">
-        <h3>Produits ({products.length})</h3>
+        <h3>🧵 Produits ({products.length})</h3>
         {loading && <p className="admin-hint">Chargement...</p>}
         {!loading && products.length === 0 && <p className="admin-hint">Aucun produit pour l'instant.</p>}
 
         <div className="admin-product-list">
-          {products.map((p) => (
-            <div key={p.id} className="admin-product-row">
-              <div className="admin-product-row__thumb">
-                {p.images?.[0] ? <img src={p.images[0]} alt={p.name} /> : <span>HJZ</span>}
+          {products.map((p) => {
+            const stockValue = Number(stockDrafts[p.id])
+            const stockClass = stockValue <= 0 ? 'is-zero' : 'is-positive'
+            return (
+              <div key={p.id} className={`admin-product-row ${Number(p.stock) <= 0 ? 'is-sold-out' : ''}`}>
+                <div className="admin-product-row__thumb">
+                  {p.images?.[0] ? <img src={p.images[0]} alt={p.name} /> : <span>HJZ</span>}
+                </div>
+                <div className="admin-product-row__info">
+                  <strong>{p.name}</strong>
+                  <span>{Number(p.price).toLocaleString('fr-FR')} DA</span>
+                  {p.has_size && <span className="admin-tag">🏷️ Tailles : {p.sizes.join(', ')}</span>}
+                  {Number(p.stock) <= 0 && <span className="admin-tag admin-tag--sold">⛔ Épuisé côté client</span>}
+                </div>
+                <div className="admin-stock-editor">
+                  <label>Stock</label>
+                  <input
+                    type="number"
+                    min="0"
+                    step="1"
+                    className={stockClass}
+                    value={stockDrafts[p.id] ?? ''}
+                    onChange={(e) => setStockDrafts((d) => ({ ...d, [p.id]: e.target.value }))}
+                  />
+                  <button
+                    type="button"
+                    className="btn"
+                    disabled={savingStockId === p.id}
+                    onClick={() => updateStock(p.id)}
+                  >
+                    {savingStockId === p.id ? '...' : 'Mettre à jour'}
+                  </button>
+                </div>
+                <button className="btn admin-delete" onClick={() => deleteProduct(p.id)}>Supprimer</button>
               </div>
-              <div className="admin-product-row__info">
-                <strong>{p.name}</strong>
-                <span>{Number(p.price).toLocaleString('fr-FR')} DA</span>
-                {p.has_size && <span className="admin-tag">Tailles : {p.sizes.join(', ')}</span>}
-                {Number(p.stock) <= 0 && <span className="admin-tag admin-tag--sold">Épuisé côté client</span>}
-              </div>
-              <div className="admin-stock-editor">
-                <label>Stock</label>
-                <input
-                  type="number"
-                  min="0"
-                  step="1"
-                  value={stockDrafts[p.id] ?? ''}
-                  onChange={(e) => setStockDrafts((d) => ({ ...d, [p.id]: e.target.value }))}
-                />
-                <button
-                  type="button"
-                  className="btn"
-                  disabled={savingStockId === p.id}
-                  onClick={() => updateStock(p.id)}
-                >
-                  {savingStockId === p.id ? '...' : 'Mettre à jour'}
-                </button>
-              </div>
-              <button className="btn admin-delete" onClick={() => deleteProduct(p.id)}>Supprimer</button>
-            </div>
-          ))}
+            )
+          })}
         </div>
       </div>
-    </div>
+      </div>
+    </>
   )
 }
