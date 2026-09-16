@@ -31,14 +31,15 @@ export default function OrdersTab() {
 
   return (
     <div className="admin-card">
-      <h3>Commandes ({orders.length})</h3>
+      <h3>🧾 Commandes ({orders.length})</h3>
       {loading && <p className="admin-hint">Chargement...</p>}
       {!loading && orders.length === 0 && <p className="admin-hint">Aucune commande reçue.</p>}
 
       <div className="admin-table">
         {orders.map((o) => (
-          <div key={o.id} className="admin-order-row">
+          <div key={o.id} className="admin-order-row" data-status={o.status}>
             <div className="admin-order-row__main">
+              <span className={`admin-status-dot admin-status-dot--${o.status}`}>{STATUS_LABELS[o.status]}</span>
               <strong>{o.first_name} {o.last_name}</strong>
               <span>{o.phone}</span>
               <span>{o.wilaya}</span>
